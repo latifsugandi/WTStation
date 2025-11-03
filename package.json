@@ -1,0 +1,113 @@
+{
+  "name": "wastation",
+  "version": "1.0.0",
+  "description": "WhatsApp Multi-Account Management Desktop App for Windows",
+  "author": "VPNMik",
+  "license": "MIT",
+  "private": true,
+  "main": "out/main/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development electron-vite dev",
+    "build": "npm run prebuild && electron-vite build && electron-builder --dir",
+    "prebuild": "powershell -ExecutionPolicy Bypass -File scripts/clean-release.ps1 || true",
+    "build:only": "electron-vite build",
+    "test:build": "electron-vite build && electron release/win-unpacked/WTStation.exe",
+    "pack": "electron-builder --win nsis",
+    "pack:sign": "npm run pack && powershell -ExecutionPolicy Bypass -File scripts/sign-with-signpath.ps1",
+    "pack:sign:local": "npm run pack && powershell -ExecutionPolicy Bypass -File scripts/sign-with-local-cert.ps1",
+    "setup:cert": "powershell -ExecutionPolicy Bypass -File scripts/setup-certificate.ps1",
+    "setup:signpath": "powershell -ExecutionPolicy Bypass -File scripts/setup-signpath.ps1",
+    "upload:cert": "powershell -ExecutionPolicy Bypass -File scripts/upload-cert-to-signpath.ps1",
+    "request:cert": "powershell -ExecutionPolicy Bypass -File scripts/request-signpath-foundation.ps1",
+    "make": "electron-builder --win nsis,msix",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@electron/remote": "^2.1.2",
+    "better-sqlite3": "^11.5.0",
+    "electron-updater": "^6.1.7",
+    "framer-motion": "^11.0.24",
+    "keytar": "^7.9.0",
+    "lucide-react": "^0.344.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-window": "^1.8.10",
+    "uuid": "^9.0.1",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.41.1",
+    "@types/better-sqlite3": "^7.6.8",
+    "@types/node": "^20.11.10",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@types/react-window": "^1.8.8",
+    "@types/uuid": "^9.0.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "cross-env": "^7.0.3",
+    "electron": "^28.1.4",
+    "electron-builder": "^24.9.1",
+    "electron-vite": "^2.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^9.0.10",
+    "prettier": "^3.2.4",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "vitest": "^1.2.1"
+  },
+  "build": {
+    "appId": "com.vpnmik.wtstation",
+    "productName": "WTStation",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "out/**/*",
+      "assets/**/*",
+      "!**/*.map"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/logo.png",
+      "requestedExecutionLevel": "asInvoker",
+      "signingHashAlgorithms": [
+        "sha256"
+      ],
+      "sign": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": {
+      "provider": "generic",
+      "url": ""
+    }
+  }
+}

@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --accent-color: rgb(0, 120, 215);
+  }
+
+  body {
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    font-family: 'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    @apply border-gray-200 dark:border-gray-700;
+  }
+}
+
+@layer components {
+  .mica {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .dark .mica {
+    background: rgba(32, 32, 32, 0.7);
+  }
+
+  .acrylic {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+  }
+
+  .dark .acrylic {
+    background: rgba(32, 32, 32, 0.8);
+  }
+
+  .titlebar {
+    @apply h-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700;
+    -webkit-app-region: drag;
+    position: relative;
+    z-index: 999999 !important;
+  }
+
+  .titlebar-button {
+    @apply w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
+    -webkit-app-region: no-drag;
+    position: relative;
+    z-index: 1000000 !important;
+    pointer-events: auto !important;
+  }
+
+  .sidebar-item {
+    @apply px-3 py-2 mx-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer flex items-center gap-3;
+  }
+
+  .sidebar-item.active {
+    @apply bg-blue-50 dark:bg-blue-900/20 text-accent;
+  }
+
+  .tab {
+    @apply px-4 py-2 flex items-center gap-2 text-sm rounded-t-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer;
+  }
+
+  .tab.active {
+    @apply bg-white dark:bg-gray-800 border-b-2 border-accent;
+  }
+}
